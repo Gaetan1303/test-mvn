@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant P1 as Attaquant (Client)
     participant WS_Handler as GameWebSocketHandler
@@ -26,3 +27,4 @@ sequenceDiagram
 
     WS_Handler->>P_Autres: Diffuser message WS: /topic/game/combat_sync (cibleId, newHP, statut)
     P_Autres->>P_Autres: Mettre à jour le statut du combat sur l'écran
+```

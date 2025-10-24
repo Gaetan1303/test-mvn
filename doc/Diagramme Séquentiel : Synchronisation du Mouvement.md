@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant P1 as Joueur A (Client)
     participant WS_Handler as GameWebSocketHandler
@@ -18,3 +19,4 @@ sequenceDiagram
 
     WS_Handler->>P2: Diffuser message WS: /topic/game/sync (PersonnageA, newX, newY)
     P2->>P2: Mettre à jour la position de A sur l'écran
+```

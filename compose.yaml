@@ -1,0 +1,32 @@
+services:
+  # 1. Conteneur pour l'application Spring Boot (votre jeu)
+  app:
+    build: . # Utilise le Dockerfile présent dans le répertoire courant
+    ports:
+      - "8080:8080" # Mappe le port 8080 du conteneur au port 8080 
+    depends_on:
+      - db # S'assure que la base de données démarre avant l'application
+    environment:
+      # Variables d'environnement pour que Spring se connecte à PostgreSQL
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/rpgdb
+      SPRING_DATASOURCE_USERNAME: rpguser
+      SPRING_DATASOURCE_PASSWORD: rpgpassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update # (À remplacer par 'validate' en production)
+      # Configuration pour le JWT et la Sécurité
+      JWT_SECRET: 'AS#H#QpM9b9@x&X$Hz$qh?e6fDbGHBrk6LFtqGnf' # JWT !
+
+  # 2. Conteneur pour la base de données PostgreSQL
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: rpgdb
+      POSTGRES_USER: rpguser
+      POSTGRES_PASSWORD: rpgpassword
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432" # Mappe le port interne 5432 au port 5433.
+
+volumes:
+  pgdata:

@@ -1,3 +1,4 @@
+```mermaid 
 sequenceDiagram
     participant Client as Client de Jeu
     participant AuthController as AuthController (REST)
@@ -20,3 +21,4 @@ sequenceDiagram
 
     WebSocketConfig->>Client: Confirmer connexion WS
     Note over Client: Le client est maintenant prêt à jouer.
+``` 
