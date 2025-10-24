@@ -129,3 +129,7 @@ Si vous voulez, je peux :
 - créer un `.gitignore` réel dans le repo.
 
 Dites-moi ce que vous souhaitez automatiser maintenant et je l'ajoute/commite.
+
+# Documentation : 
+
+Il y a un dossier "doc" dans le projet qui retrace la documentation technique du projet, avec : cahier des charges, diagrammes de classes et UML (Unified Modeling Language) 

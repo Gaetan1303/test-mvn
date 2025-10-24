@@ -28,36 +28,48 @@
 
 Les fonctionnalités sont réparties selon les jalons du plan d'action.
 
+Temps TT : 8 semaines (prévision) - 12 semaines (sureté)
+
 ### C.1. Module Authentification & Persistance (Phase 0)
 
-| ID | Exigence Fonctionnelle | Description |
-| :--- | :--- | :--- |
-| **F-AUTH-01** | **Gestion des Comptes** | Permettre aux utilisateurs de s'inscrire et de se connecter (**Spring Security**). |
-| **F-PERS-01** | **Persistance des Données** | Sauvegarder les données des `Utilisateur` et `Personnage` dans la base de données. |
-| **F-CHAR-01** | **Création de Personnage** | Permettre de choisir un nom et une `ClassePersonnage` au moment de la création. |
+Temps : 1 semaine
+
+| ID | Exigence Fonctionnelle | Description | Temps |
+| :--- | :--- | :--- |-|
+| **F-AUTH-01** | **Gestion des Comptes** | Permettre aux utilisateurs de s'inscrire et de se connecter (**Spring Security**). |2 jours|
+| **F-PERS-01** | **Création des classes de Personnage** | Sauvegarder les données des `Utilisateur` et `Personnage` dans la base de données. |1 jour|
+| **F-CHAR-01** | **Création de Personnage** | Permettre de choisir un nom et une `ClassePersonnage` au moment de la création. | 1 jour |
 
 ### C.2. Module Multijoueur & Mouvement (Phase 1)
 
-| ID | Exigence Fonctionnelle | Description |
-| :--- | :--- | :--- |
-| **F-MULTI-01** | **Connexion Temps Réel** | Établir et maintenir une connexion WebSocket bidirectionnelle avec le client. |
-| **F-MULTI-02** | **Synchronisation du Mouvement**| Le mouvement d'un joueur doit être diffusé aux autres joueurs de la même zone en temps réel. |
-| **F-MULTI-03** | **Gestion de la Zone** | Le serveur gère la liste des joueurs présents dans une zone de jeu donnée. |
+Temps : 2 semaines
+
+| ID | Exigence Fonctionnelle | Description | Temps |
+| :--- | :--- | :--- |-|
+| **F-MULTI-01** | **Connexion Temps Réel** | Établir et maintenir une connexion WebSocket bidirectionnelle avec le client. | 1 jour |
+| **F-MULTI-02** | **Déplacement du personnage** | Le joueur peut effectuer des mouvements en haut, en bas à droite et à gauche sur une grille de déplacement | 5 jours |
+| **F-MULTI-02** | **Gestion de la Zone** | Le serveur gère la liste des joueurs présents dans une zone de jeu donnée. | 1 jour |
+| **F-MULTI-03** | **Broadcasting du Mouvement**| Le mouvement d'un joueur doit être diffusé aux autres joueurs de la même zone en temps réel. | 3 jours |
 
 ### C.3. Module Logique RPG (Phase 2)
 
-| ID | Exigence Fonctionnelle | Description |
-| :--- | :--- | :--- |
-| **F-RPG-01** | **Système de Classes** | **8 classes** de personnages doivent être implémentées (stats de base et progression uniques). |
-| **F-RPG-02** | **Inventaire & Équipement**| Les joueurs peuvent stocker des `Objet`, les équiper et les déséquiper (affectant les statistiques). |
-| **F-RPG-03** | **Combat Simplifié** | Les joueurs et les monstres peuvent se cibler et s'attaquer. Le serveur calcule les dégâts et met à jour les HP (Serveur Autoritaire). |
-| **F-RPG-04** | **Compétences** | Le système doit permettre l'utilisation des compétences avec gestion du coût en mana/ressource. |
+Temps : 10 jours
+
+| ID | Exigence Fonctionnelle | Description | Temps |
+| :--- | :--- | :--- | - |
+| **F-RPG-01** | **Système de Classes** | **8 classes** de personnages doivent être implémentées (stats de base et progression uniques). | 1 jour |
+| **F-RPG-02** | **Inventaire & Équipement**| Les joueurs peuvent stocker des `Objet`, les équiper et les déséquiper (affectant les statistiques). | 2 jours |
+| **F-RPG-03** | **Combat Simplifié** | Les joueurs et les monstres peuvent se cibler et s'attaquer. Le serveur calcule les dégâts et met à jour les HP (Serveur Autoritaire). | 5 jours |
+| **F-RPG-04** | **Compétences** | Le système doit permettre l'utilisation des compétences avec gestion du coût en mana/ressource. | 2 jours |
 
 ### C.4. Module Contenu (Phase 3)
 
-| ID | Exigence Fonctionnelle | Description |
-| :--- | :--- | :--- |
-| **F-CONT-01** | **Système de Quête** | Les joueurs peuvent accepter et compléter des quêtes simples (ex: Tué X monstres). |
+
+Temps : A définir (3 semaines)
+
+| ID | Exigence Fonctionnelle | Description | Temps |
+| :--- | :--- | :--- | -|
+| **F-CONT-01** | **Système de Quête** | Les joueurs peuvent accepter et compléter des quêtes simples (ex: Tué X monstres). |   |
 | **F-CONT-02** | **Donjons Instanciés** | Création d'instances de `Donjon` pour les groupes de joueurs (zones privées avec des monstres dédiés). |
 | **F-CONT-03** | **Monstres** | Les monstres possèdent des statistiques et ont un comportement d'attaque de base (IA simple). |
 
