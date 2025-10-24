@@ -23,7 +23,7 @@ Ce modèle se concentre sur les entités de jeu qui seront gérées et persisté
 ### Diagramme UML (Mermaid)
 
 ```mermaid
-classDiagram
+lassDiagram
     direction LR
 
     class Utilisateur {
@@ -42,7 +42,7 @@ classDiagram
         - positionX: int
         - positionY: int
         - classe: ClassePersonnage
-        - inventaire: List<Objet>
+        - inventaire: Inventaire
         + attaquer(cible)
         + utiliserCompetence(comp)
     }
@@ -59,7 +59,7 @@ classDiagram
         - nom: String
         - coutMana: int
         - type: String (Dégât, Soin, Buff)
-        + executer(lanceur, cible)
+        - executer(lanceur, cible)
     }
 
     class Inventaire {
@@ -101,3 +101,4 @@ classDiagram
     Inventaire "1" -- "0..*" Objet : contient >
     Donjon "1" -- "0..*" Personnage : contient >
     Donjon "1" -- "0..*" Monstre : contient >
+```
