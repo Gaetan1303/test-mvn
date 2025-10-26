@@ -1,0 +1,23 @@
+:80 {
+    log {
+        output stdout
+        format json
+        level INFO
+    }
+
+    header {
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+    }
+
+    route /api/* {
+        reverse_proxy app:8080
+    }
+
+    route /.well-known/mercure {
+        reverse_proxy mercure:80 {
+            flush_interval -1
+        }
+    }
+}

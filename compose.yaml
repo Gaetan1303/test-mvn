@@ -1,32 +1,112 @@
-services:
-  # 1. Conteneur pour l'application Spring Boot (votre jeu)
-  app:
-    build: . # Utilise le Dockerfile présent dans le répertoire courant
-    ports:
-      - "8080:8080" # Mappe le port 8080 du conteneur au port 8080 
-    depends_on:
-      - db # S'assure que la base de données démarre avant l'application
-    environment:
-      # Variables d'environnement pour que Spring se connecte à PostgreSQL
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/rpgdb
-      SPRING_DATASOURCE_USERNAME: rpguser
-      SPRING_DATASOURCE_PASSWORD: rpgpassword
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update # (À remplacer par 'validate' en production)
-      # Configuration pour le JWT et la Sécurité
-      JWT_SECRET: 'AS#H#QpM9b9@x&X$Hz$qh?e6fDbGHBrk6LFtqGnf' # JWT !
+version: '3.8'
 
-  # 2. Conteneur pour la base de données PostgreSQL
+services:
+  # 1️1 Application Spring Boot
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      mercure:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASS}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: ${JWT_SECRET}
+      MERCURE_URL: http://mercure/.well-known/mercure
+      MERCURE_JWT_SECRET: ${MERCURE_JWT_SECRET}
+    networks:
+      - backend
+      - frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # 2️2 PostgreSQL
   db:
     image: postgres:15-alpine
-    restart: always
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: rpgdb
-      POSTGRES_USER: rpguser
-      POSTGRES_PASSWORD: rpgpassword
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5433:5432" # Mappe le port interne 5432 au port 5433.
+      - "5433:5432"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # 3️3 Mercure Hub
+  mercure:
+    image: dunglas/mercure:latest
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: ':80'
+      MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_JWT_SECRET}
+      MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_JWT_SECRET}
+      MERCURE_EXTRA_DIRECTIVES: |
+        cors_origins *
+        anonymous
+    command: /usr/bin/caddy run --config /etc/caddy/Caddyfile
+    volumes:
+      - mercure_data:/data
+      - mercure_config:/config
+    networks:
+      - frontend
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/.well-known/mercure"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # 4️4 Caddy reverse-proxy
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - mercure
+      - app
+    networks:
+      - frontend
+    environment:
+      CADDY_ADMIN: "0.0.0.0:2019"
 
 volumes:
   pgdata:
+    driver: local
+  mercure_data:
+    driver: local
+  mercure_config:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
