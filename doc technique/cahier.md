@@ -16,7 +16,7 @@
 | :--- | :--- |
 | **Langage de Programmation** | **Java** (JDK 17 ou supérieur recommandé). |
 | **Architecture Serveur** | **Spring Boot** (v3+), utilisation de l'architecture par couches (Services, Repositories). |
-| **Gestion de Projet** | Maven (`pom.xml`) ou Gradle (`build.gradle`), suivi par GitHub Issues/Milestones. |
+| **Gestion de Projet** | Maven (`pom.xml`), suivi par GitHub Issues/Milestones. |
 | **Base de Données** | PostgreSQL ou MySQL. Utilisation de **Spring Data JPA**. |
 | **Communication Réseau** | **WebSockets** (via Spring-Websocket) pour la synchronisation en temps réel (mouvement, combat). |
 | **Serveur de Jeu** | **Autoritaire** (la logique de combat s'exécute uniquement sur le serveur Spring Boot). |

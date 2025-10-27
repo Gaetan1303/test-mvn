@@ -1,5 +1,5 @@
 services:
-  # 1️1 Application Spring Boot
+  #  Application Spring Boot
   app:
     build: .
     ports:
@@ -20,15 +20,9 @@ services:
     networks:
       - backend
       - frontend
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
     restart: unless-stopped
 
-  # 2️2 PostgreSQL
+  #  Base de données PostgreSQL
   db:
     image: postgres:15-alpine
     restart: unless-stopped
@@ -49,7 +43,7 @@ services:
       retries: 5
       start_period: 10s
 
-  # 3️3 Mercure Hub
+  #  Mercure Hub (avec Caddy intégré)
   mercure:
     image: dunglas/mercure:latest
     restart: unless-stopped
@@ -60,19 +54,16 @@ services:
       MERCURE_EXTRA_DIRECTIVES: |
         cors_origins *
         anonymous
-    command: /usr/bin/caddy run --config /etc/caddy/Caddyfile
     volumes:
+      - ./mercure/Caddyfile:/etc/caddy/Caddyfile:ro
       - mercure_data:/data
       - mercure_config:/config
+    ports:
+      - "8081:80"
     networks:
       - frontend
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/.well-known/mercure"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 
-  # 4️4 Caddy reverse-proxy
+  #  Reverse Proxy Caddy
   caddy:
     image: caddy:latest
     restart: unless-stopped
@@ -84,24 +75,17 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
-      - mercure
       - app
+      - mercure
     networks:
       - frontend
-    environment:
-      CADDY_ADMIN: "0.0.0.0:2019"
 
 volumes:
   pgdata:
-    driver: local
   mercure_data:
-    driver: local
   mercure_config:
-    driver: local
   caddy_data:
-    driver: local
   caddy_config:
-    driver: local
 
 networks:
   frontend:

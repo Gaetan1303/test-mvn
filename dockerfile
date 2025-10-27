@@ -1,11 +1,8 @@
 # ----------------------------------------------------------------------------------
-# ÉTAPE 1 : BUILD - Utilise une image JDK complète pour compiler le code
-# Utiliser l'image Maven ou Gradle selon votre choix final
+# ÉTAPE 1 : BUILD - image JDK complète pour compiler
+# image Maven
 # Si vous utilisez Maven (pom.xml) :
 FROM maven:3.9.5-eclipse-temurin-21-alpine AS build
-
-# Si vous utilisez Gradle (build.gradle) :
-# FROM gradle:8.5.0-jdk21-alpine AS build
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
@@ -13,24 +10,16 @@ WORKDIR /app
 # Copier les fichiers de définition de build pour le téléchargement des dépendances
 # Cela permet au build de cache les dépendances si le code source ne change pas.
 COPY pom.xml .
-COPY build.gradle .
-COPY settings.gradle .
 
 # Télécharger les dépendances
-# Si Maven :
+# Maven :
 RUN mvn dependency:go-offline
-
-# Si Gradle :
-# RUN gradle dependencies
 
 # Copier le code source complet
 COPY src /app/src
 
 # Construire le JAR exécutable (le fichier .jar)
 RUN mvn clean package -DskipTests
-
-# Si Gradle :
-# RUN gradle clean build -x test
 
 # ----------------------------------------------------------------------------------
 # ÉTAPE 2 : PRODUCTION - Utilise une image JRE légère pour l'exécution

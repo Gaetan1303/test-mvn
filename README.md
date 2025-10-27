@@ -1,6 +1,6 @@
 # test — Application Spring Boot + Electron
 
-Ce dépôt contient une application backend Spring Boot (Maven/Gradle) et une interface cliente légère Electron située dans `electron-shell/`.
+Ce dépôt contient une application backend Spring Boot (Maven) et une interface cliente légère Electron située dans `electron-shell/`.
 
 Ce README explique comment initialiser le projet pour GitHub, les prérequis, et comment lancer localement le backend et l'interface Electron.
 
@@ -8,7 +8,6 @@ Ce README explique comment initialiser le projet pour GitHub, les prérequis, et
 
 - `src/` : code source Java (Spring Boot)
 - `pom.xml` / `mvnw` : Maven wrapper pour construire et lancer l'application
-- `build.gradle` / `gradlew` : fichiers Gradle (alternatif)
 - `electron-shell/` : application Electron (UI)
 
 ## Prérequis
@@ -59,12 +58,6 @@ Utilisez le wrapper Maven fourni (recommandé) :
 
 Les logs apparaîtront dans le terminal; l'API devrait être disponible sur `http://localhost:8080` (par défaut).
 
-Si vous voulez lancer via Gradle (si vous utilisez Gradle) :
-
-```bash
-./gradlew bootRun
-```
-
 ## Démarrer l'interface Electron
 
 1. Installer les dépendances :
@@ -87,7 +80,7 @@ Remarque : `electron-shell/start.sh` est un helper qui tente de démarrer Maven 
 
 - Ajoutez un fichier `.gitignore` à la racine pour exclure les dossiers générés (exemples ci-dessous).
 - Versionnez uniquement le code source et les fichiers de configuration, pas `node_modules/`, `target/`, `build/`, ni `.m2/`.
-- Harmonisez la version Java entre `pom.xml` et `build.gradle`.
+- Harmonisez la version Java `pom.xml`
 
 Exemple minimal de `.gitignore` :
 
@@ -118,7 +111,7 @@ thumbs.db
 ## Dépannage rapide
 
 - Si Electron ne s'ouvre pas, vérifiez que `npm install` a bien installé `electron` et que votre Node.js est compatible.
-- Si Spring Boot lève des erreurs liées à la version Java, exécutez `java -version` et alignez la propriété `java.version` dans `pom.xml` ou `build.gradle`.
+- Si Spring Boot lève des erreurs liées à la version Java, exécutez `java -version` et alignez la propriété `java.version` dans `pom.xml`.
 - Pour exécuter le projet en mode développement, ouvrez deux terminaux — un pour le backend (`./mvnw spring-boot:run`) et un pour Electron (`cd electron-shell && npm start`).
 
 ---
