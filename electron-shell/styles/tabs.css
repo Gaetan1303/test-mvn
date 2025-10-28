@@ -1,0 +1,32 @@
+/* ============================================
+   SYSTÈME D'ONGLETS
+   ============================================ */
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.tab:hover {
+    background: #f8f9fa;
+}
+
+.tab.active {
+    border-bottom-color: #667eea;
+    color: #667eea;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: block;
+}

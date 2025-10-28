@@ -202,4 +202,4 @@ dependency-reduced-pom.xml
 README.html
 *.iml
 .idea
-.exercism
+.exercismapp.pid

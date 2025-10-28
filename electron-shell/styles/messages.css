@@ -1,0 +1,44 @@
+/* ============================================
+   MESSAGES (ERREURS, SUCCÈS, INFOS)
+   ============================================ */
+
+.error {
+    background: #fee;
+    color: #c33;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    display: none;
+    border-left: 4px solid #c33;
+}
+
+.error.show {
+    display: block;
+}
+
+.success {
+    background: #efe;
+    color: #3c3;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border-left: 4px solid #3c3;
+}
+
+.warning {
+    background: #fffbeb;
+    color: #d97706;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border-left: 4px solid #d97706;
+}
+
+.info {
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border-left: 4px solid #2563eb;
+}

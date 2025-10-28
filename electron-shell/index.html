@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Multijoueur</title>
+    
+    <!-- Styles modulaires -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/forms.css">
+    <link rel="stylesheet" href="styles/tabs.css">
+    <link rel="stylesheet" href="styles/messages.css">
+    <link rel="stylesheet" href="styles/character.css">
+    <link rel="stylesheet" href="styles/game.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 RPG Multijoueur</h1>
+
+        <!-- Écran de connexion/inscription -->
+        <div id="authScreen" class="screen active">
+            <div class="tabs">
+                <div class="tab active" data-tab="login">Connexion</div>
+                <div class="tab" data-tab="register">Inscription</div>
+            </div>
+
+            <div id="errorMsg" class="error"></div>
+
+            <!-- Formulaire de connexion -->
+            <div id="loginForm" class="tab-content">
+                <div class="form-group">
+                    <label for="loginUsername">Nom d'utilisateur</label>
+                    <input type="text" id="loginUsername" placeholder="Entrez votre nom d'utilisateur">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mot de passe</label>
+                    <input type="password" id="loginPassword" placeholder="Entrez votre mot de passe">
+                </div>
+                <button id="loginBtn">Se connecter</button>
+            </div>
+
+            <!-- Formulaire d'inscription -->
+            <div id="registerForm" class="tab-content" style="display:none;">
+                <div class="form-group">
+                    <label for="registerUsername">Nom d'utilisateur</label>
+                    <input type="text" id="registerUsername" placeholder="Min. 3 caractères">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="exemple@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mot de passe</label>
+                    <input type="password" id="registerPassword" placeholder="Min. 6 caractères">
+                </div>
+                <button id="registerBtn">S'inscrire</button>
+            </div>
+        </div>
+
+        <!-- Écran de menu principal -->
+        <div id="menuScreen" class="screen">
+            <h2>Menu Principal</h2>
+            <div id="menuContent" class="loading">Chargement...</div>
+        </div>
+
+        <!-- Écran de création de personnage -->
+        <div id="createCharScreen" class="screen">
+            <h2>Créer votre personnage</h2>
+            <div id="createCharError" class="error"></div>
+            
+            <div class="form-group">
+                <label for="charName">Nom du personnage</label>
+                <input type="text" id="charName" placeholder="Entrez un nom unique (3-50 caractères)">
+            </div>
+
+            <div class="form-group">
+                <label>Classe de personnage</label>
+                <div id="classSelectContainer" class="class-select">
+                    <!-- Les classes seront chargées dynamiquement depuis le backend -->
+                    <div class="loading">Chargement des classes...</div>
+                </div>
+            </div>
+
+            <button id="createCharBtn">Créer le personnage</button>
+            <button id="logoutFromCreateBtn" class="secondary">Déconnexion</button>
+        </div>
+
+        <!-- Écran de personnage (avant lancement) -->
+        <div id="characterScreen" class="screen">
+            <h2>Votre personnage</h2>
+            <div class="character-info" id="charInfo">
+                <!-- Informations du personnage chargées dynamiquement -->
+            </div>
+            <button id="launchGameBtn">🚀 Lancer le jeu</button>
+            <button id="deleteCharacterBtn" class="danger">🗑️ Supprimer le personnage</button>
+            <button id="logoutBtn" class="secondary">Déconnexion</button>
+        </div>
+
+        <!-- Écran de jeu (placeholder) -->
+        <div id="gameScreen" class="screen">
+            <h2>🎮 Jeu en cours</h2>
+            <div class="success">
+                Le jeu est lancé ! 🎉<br>
+                <small>Prochaine étape : WebSocket + Canvas pour le mouvement temps réel</small>
+            </div>
+            <div id="gameCanvas" style="background: #2c3e50; height: 400px; border-radius: 8px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: white;">
+                <div>Canvas de jeu (à implémenter)</div>
+            </div>
+            <button id="exitGameBtn" class="secondary">Quitter le jeu</button>
+        </div>
+    </div>
+
+    <!-- Scripts modulaires - Ordre important ! -->
+    <!-- 1. Utilitaires -->
+    <script src="scripts/utils/state.js"></script>
+    <script src="scripts/utils/screen-manager.js"></script>
+    <script src="scripts/utils/message-manager.js"></script>
+    <script src="scripts/utils/validators.js"></script>
+    
+    <!-- 2. Écrans -->
+    <script src="scripts/screens/auth-screen.js"></script>
+    <script src="scripts/screens/menu-screen.js"></script>
+    <script src="scripts/screens/create-character-screen.js"></script>
+    <script src="scripts/screens/character-screen.js"></script>
+    <script src="scripts/screens/game-screen.js"></script>
+    
+    <!-- 3. Point d'entrée principal -->
+    <script src="scripts/app.js"></script>
+</body>
+</html>
