@@ -1,128 +1,287 @@
-# test — Application Spring Boot + Electron
+# RPG Multijoueur FFT - Application Spring Boot + Electron
 
-Ce dépôt contient une application backend Spring Boot (Maven) et une interface cliente légère Electron située dans `electron-shell/`.
+Application de jeu de rôle multijoueur inspirée de Final Fantasy Tactics, avec backend Spring Boot et interface Electron.
 
-Ce README explique comment initialiser le projet pour GitHub, les prérequis, et comment lancer localement le backend et l'interface Electron.
+## Architecture
 
-## Structure principale
+- **Backend** : Spring Boot 3.5.6 + PostgreSQL + WebSocket STOMP + Mercure SSE
+- **Frontend** : Electron 28.0.0 avec architecture modulaire
+- **Infrastructure** : Docker Compose (app, db, caddy, mercure)
+- **Système de jeu** : 18 classes FFT, 14 statistiques FFTA, mouvement temps réel
 
-- `src/` : code source Java (Spring Boot)
-- `pom.xml` / `mvnw` : Maven wrapper pour construire et lancer l'application
-- `electron-shell/` : application Electron (UI)
+## Structure du projet
+
+```
+test-mvn/
+├── src/main/java/          # Backend Spring Boot
+│   ├── controller/         # REST + WebSocket controllers
+│   ├── service/            # Logique métier (Game, Auth, Mercure)
+│   ├── model/              # Entités JPA (Character, Utilisateur)
+│   ├── security/           # JWT + Spring Security
+│   └── websocket/          # Config STOMP + GameSessionManager
+├── electron-shell/         # Frontend Electron
+│   ├── scripts/            # Logique UI (screens, utils)
+│   ├── styles/             # CSS modulaire
+│   └── index.html          # Point d'entrée
+├── doc technique/          # Documentation complète
+│   ├── ARCHITECTURE.md
+│   ├── PHASE1_WEBSOCKET_IMPLEMENTATION.md
+│   └── Diagrammes UML
+├── compose.yaml            # Docker Compose
+├── dockerfile              # Build multi-stage
+└── pom.xml                 # Maven
+```
 
 ## Prérequis
 
-- Java JDK (17+ recommandé, vérifier la compatibilité de vos outils)
-- Maven (ou utilisez le wrapper `./mvnw` fourni)
-- Node.js (>=18) et npm (pour la partie Electron)
-- Git (pour initialiser le dépôt GitHub)
+- **Java 21** (OpenJDK ou Eclipse Temurin)
+- **Maven 3.9+** (ou utilisez `./mvnw`)
+- **Docker** et **Docker Compose**
+- **Node.js 18+** et **npm** (pour Electron)
+- **Git**
 
-Vérifiez vos versions :
-
+Vérification :
 ```bash
-java -version
-./mvnw -v
-node -v
+java -version          # doit afficher Java 21
+docker --version
+docker-compose --version
+node -v                # >= 18.x
 npm -v
 ```
 
-## Initialiser le dépôt Git et le publier sur GitHub
+## Installation initiale
 
-1. Initialiser le dépôt local (si ce n'est pas déjà le cas) :
-
-```bash
-git init
-git add .
-git commit -m "Initial commit: Spring Boot + Electron shell"
-```
-
-2. Ajouter le remote GitHub et pousser :
+### 1. Cloner le projet
 
 ```bash
-# Remplacez <user> et <repo> par vos valeurs
-git remote add origin git@github.com:<user>/<repo>.git
-git branch -M main
-git push -u origin main
+git clone https://github.com/Gaetan1303/test-mvn.git
+cd test-mvn
 ```
 
-3. (Optionnel) Créez un `README.md` (déjà présent) et activez GitHub Actions/CI selon vos besoins.
+### 2. Créer le fichier .env (OBLIGATOIRE)
 
-## Démarrer le backend Spring Boot
-
-Utilisez le wrapper Maven fourni (recommandé) :
+Le fichier `.env` contient les variables d'environnement pour Docker :
 
 ```bash
-# depuis la racine du projet
-./mvnw spring-boot:run
+cat > .env << 'EOF'
+# Base de données PostgreSQL
+DB_NAME=rpgdb
+DB_USER=rpguser
+DB_PASS=rpgpassword
+
+
+# Hibernate
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
+EOF
 ```
 
-Les logs apparaîtront dans le terminal; l'API devrait être disponible sur `http://localhost:8080` (par défaut).
+**IMPORTANT** : En production, changez ces secrets !
 
-## Démarrer l'interface Electron
-
-1. Installer les dépendances :
+### 3. Installer les dépendances Electron
 
 ```bash
 cd electron-shell
 npm install
+cd ..
 ```
 
-2. Lancer Electron :
+## Lancement du projet
+
+### Option 1 : Lancement complet avec Docker (RECOMMANDÉ)
 
 ```bash
-npm start    # lancement normal
-npm run dev  # ouvre les devtools
+# Depuis la racine du projet
+export $(cat .env | grep -v '^#' | xargs)
+docker-compose up --build -d
 ```
 
-Remarque : `electron-shell/start.sh` est un helper qui tente de démarrer Maven puis Electron. Il utilise des chemins `~/test/test` — vous pouvez l'adapter pour des chemins relatifs si nécessaire.
+Services lancés :
+- **Backend Spring Boot** : http://localhost:8080
+- **PostgreSQL** : localhost:5433
+- **Mercure Hub** : http://localhost:8081
+- **Caddy (Reverse Proxy)** : http://localhost:3000
 
-## Suggestions et bonnes pratiques
-
-- Ajoutez un fichier `.gitignore` à la racine pour exclure les dossiers générés (exemples ci-dessous).
-- Versionnez uniquement le code source et les fichiers de configuration, pas `node_modules/`, `target/`, `build/`, ni `.m2/`.
-- Harmonisez la version Java `pom.xml`
-
-Exemple minimal de `.gitignore` :
-
-```
-# Java
-/target/
-/build/
-.classpath
-.project
-.settings/
-
-# Maven
-/.mvn/
-/spring-boot.log
-
-# Node
-/electron-shell/node_modules/
-
-# OS
-.DS_Store
-thumbs.db
-
-# IDE
-.idea/
-/.vscode/
+Vérification :
+```bash
+docker ps                                    # Tous les conteneurs UP
+curl http://localhost:8080/health            # {"status":"UP"}
+curl http://localhost:8080/api/character/classes | jq length  # 18
 ```
 
-## Dépannage rapide
+### Option 2 : Lancement manuel (développement)
 
-- Si Electron ne s'ouvre pas, vérifiez que `npm install` a bien installé `electron` et que votre Node.js est compatible.
-- Si Spring Boot lève des erreurs liées à la version Java, exécutez `java -version` et alignez la propriété `java.version` dans `pom.xml`.
-- Pour exécuter le projet en mode développement, ouvrez deux terminaux — un pour le backend (`./mvnw spring-boot:run`) et un pour Electron (`cd electron-shell && npm start`).
+**Terminal 1 - Backend** :
+```bash
+export $(cat .env | grep -v '^#' | xargs)
+./mvnw spring-boot:run
+```
 
----
+**Terminal 2 - Electron** :
+```bash
+cd electron-shell
+npm start              # Mode normal
+# ou
+npm run dev            # Avec DevTools
+```
 
-Si vous voulez, je peux :
-- ajouter un `index.html` minimal dans `electron-shell/`;
-- corriger `start.sh` pour utiliser des chemins relatifs et un encodage UTF-8 propre;
-- créer un `.gitignore` réel dans le repo.
+## Arrêt propre
 
-Dites-moi ce que vous souhaitez automatiser maintenant et je l'ajoute/commite.
+```bash
+docker-compose down                # Arrête les conteneurs
+docker-compose down -v             # + supprime les volumes (DB)
+```
 
-# Documentation : 
+## Endpoints principaux
 
-Il y a un dossier "doc" dans le projet qui retrace la documentation technique du projet, avec : cahier des charges, diagrammes de classes et UML (Unified Modeling Language) 
+### REST API
+
+| Endpoint | Méthode | Auth | Description |
+|----------|---------|------|-------------|
+| `/` | GET | Public | Page d'accueil API |
+| `/health` | GET | Public | Health check |
+| `/api/auth/register` | POST | Public | Inscription |
+| `/api/auth/login` | POST | Public | Connexion (retourne JWT) |
+| `/api/character/classes` | GET | Public | Liste des 18 classes FFT |
+| `/api/character/create` | POST | JWT | Créer un personnage |
+| `/api/character/list` | GET | JWT | Liste des personnages |
+| `/api/character/me` | GET | JWT | Personnage actif |
+
+### WebSocket STOMP
+
+**Connexion** : `ws://localhost:8080/ws` (ou `/ws-sockjs` avec SockJS)
+
+**Headers requis** :
+```javascript
+{
+  "Authorization": "Bearer <JWT_TOKEN>"
+}
+```
+
+**Destinations client → serveur** :
+- `/app/game/connect` - Connecter un personnage
+- `/app/game/move` - Déplacer (validé côté serveur)
+- `/app/chat/send` - Envoyer un message chat
+
+**Souscriptions serveur → client** :
+- `/topic/game/position` - Positions de tous les joueurs (broadcast)
+- `/topic/game/disconnect` - Notifications de déconnexion
+- `/user/queue/errors` - Erreurs privées
+
+### Mercure SSE
+
+**Endpoint** : `http://localhost:8081/.well-known/mercure?topic=chat/global`
+
+Écoute des messages chat en temps réel via Server-Sent Events.
+
+## Tests
+
+Le projet a été testé avec succès en charge :
+- **75 joueurs simultanés** (50 en mouvement + 25 en chat)
+- **100% taux de succès**, 0 erreurs
+- **75,196 messages** broadcast
+- **Latence moyenne : 0.16ms**
+- Infrastructure validée comme TRÈS STABLE
+
+Voir `doc technique/PHASE1_WEBSOCKET_IMPLEMENTATION.md` pour les détails.
+
+## Variables d'environnement
+
+| Variable | Valeur par défaut | Description |
+|----------|-------------------|-------------|
+| `DB_NAME` | rpgdb | Nom base PostgreSQL |
+| `DB_USER` | rpguser | Utilisateur PostgreSQL |
+| `DB_PASS` | rpgpassword | Mot de passe PostgreSQL |
+| `JWT_SECRET` | (voir .env) | Secret JWT (256 bits min) |
+| `MERCURE_JWT_SECRET` | (voir .env) | Secret Mercure |
+
+## Dépannage
+
+### Backend ne démarre pas
+
+1. Vérifier que le fichier `.env` existe et est correctement chargé :
+```bash
+export $(cat .env | grep -v '^#' | xargs)
+docker-compose config  # Affiche la config avec variables
+```
+
+2. Logs Docker :
+```bash
+docker logs test-mvn_app_1 --tail 100
+```
+
+3. Erreur PostgreSQL "no password provided" :
+```bash
+# Re-créer les conteneurs
+docker-compose down
+export $(cat .env | grep -v '^#' | xargs)
+docker-compose up --build -d
+```
+
+### Electron ne se lance pas
+
+```bash
+cd electron-shell
+rm -rf node_modules package-lock.json
+npm install
+npm start
+```
+
+### Endpoint /api/character/classes retourne vide
+
+Le backend n'a pas démarré correctement. Vérifier :
+```bash
+curl http://localhost:8080/health
+docker logs test-mvn_app_1 | grep ERROR
+```
+
+### WebSocket refuse la connexion
+
+1. Vérifier que le JWT est valide :
+```bash
+# Obtenir un token
+TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"test","password":"password"}' | jq -r '.token')
+
+# Tester un endpoint protégé
+curl http://localhost:8080/api/character/list \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+2. Le endpoint `/ws` doit être accessible :
+```bash
+curl -i http://localhost:8080/ws
+# Devrait retourner un Upgrade WebSocket ou 400 (normal en HTTP)
+```
+
+## Documentation technique
+
+Consultez le dossier `doc technique/` :
+- **ARCHITECTURE.md** : Diagrammes complets (Electron, Backend, Flow)
+- **PHASE1_WEBSOCKET_IMPLEMENTATION.md** : Implémentation WebSocket détaillée
+- **Diagrammes UML** : Classes, séquences, états
+
+## Technologies utilisées
+
+### Backend
+- Spring Boot 3.5.6
+- Spring Security + JWT
+- Spring WebSocket (STOMP)
+- PostgreSQL 15
+- Hibernate/JPA
+- Mercure Hub (SSE)
+
+### Frontend
+- Electron 28.0.0
+- Architecture MVC modulaire
+- Axios (HTTP)
+- Pattern Singleton pour l'état
+
+### Infrastructure
+- Docker + Docker Compose
+- Caddy (reverse proxy)
+- Multi-stage Dockerfile
+
+## Licence
+
+Projet éducatif - RPG FFT Multiplayer 
