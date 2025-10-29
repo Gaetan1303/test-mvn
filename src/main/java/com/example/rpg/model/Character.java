@@ -133,21 +133,27 @@ public class Character {
 
     /**
      * Vérifie si le personnage est vivant
+     * @deprecated Utiliser CombatService.isAlive() pour respecter le principe S (Single Responsibility)
      */
+    @Deprecated
     public boolean isAlive() {
         return currentHp > 0;
     }
 
     /**
      * Applique des dégâts au personnage
+     * @deprecated Utiliser CombatService.takeDamage() pour respecter le principe S (Single Responsibility)
      */
+    @Deprecated
     public void takeDamage(int damage) {
         this.currentHp = Math.max(0, this.currentHp - damage);
     }
 
     /**
      * Soigne le personnage
+     * @deprecated Utiliser CombatService.heal() pour respecter le principe S (Single Responsibility)
      */
+    @Deprecated
     public void heal(int amount) {
         this.currentHp = Math.min(maxHp, this.currentHp + amount);
     }

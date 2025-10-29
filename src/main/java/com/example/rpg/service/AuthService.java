@@ -5,24 +5,31 @@ import com.example.rpg.repository.UtilisateurRepository;
 import com.example.rpg.security.JwtUtil;
 import com.example.rpg.exception.UserAlreadyExistsException;
 import com.example.rpg.exception.InvalidCredentialsException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Service d'authentification
+ * Respecte le principe D (Dependency Inversion) : injecte PasswordEncoder au lieu de le créer
+ * Respecte le principe I (Interface Segregation) : implémente l'interface IAuthService
+ */
 @Service
-public class AuthService {
+public class AuthService implements IAuthService {
 
     private final UtilisateurRepository utilisateurRepository;
     private final JwtUtil jwtUtil;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UtilisateurRepository utilisateurRepository, JwtUtil jwtUtil) {
+    public AuthService(UtilisateurRepository utilisateurRepository, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
         this.utilisateurRepository = utilisateurRepository;
         this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
     public String register(String username, String email, String password) {
         if (utilisateurRepository.existsByUsername(username)) {
             throw new UserAlreadyExistsException("Nom d'utilisateur déjà utilisé");
@@ -41,6 +48,7 @@ public class AuthService {
         return jwtUtil.generateToken(claims, utilisateur.getUsername());
     }
 
+    @Override
     public String login(String username, String password) {
         Utilisateur utilisateur = utilisateurRepository.findByUsername(username)
                 .orElseThrow(() -> new InvalidCredentialsException("Utilisateur non trouvé"));

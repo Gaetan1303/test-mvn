@@ -17,9 +17,10 @@ import java.util.List;
 /**
  * Service de gestion des personnages de jeu
  * Support de plusieurs personnages par utilisateur (max 3)
+ * Respecte le principe I (Interface Segregation) : implémente l'interface ICharacterService
  */
 @Service
-public class CharacterService {
+public class CharacterService implements ICharacterService {
 
     private static final int MAX_CHARACTERS_PER_USER = 3;
 
@@ -43,6 +44,7 @@ public class CharacterService {
      * @throws CharacterLimitException Si l'utilisateur a déjà 3 personnages
      * @throws CharacterAlreadyExistsException Si le nom de personnage existe déjà
      */
+    @Override
     @Transactional
     public Character createCharacter(String username, String characterName, CharacterClass characterClass) {
         // Vérifier que l'utilisateur existe
@@ -89,6 +91,7 @@ public class CharacterService {
      * @param username Nom d'utilisateur
      * @return Liste des personnages (peut être vide)
      */
+    @Override
     @Transactional(readOnly = true)
     public List<Character> getAllCharactersByUsername(String username) {
         Utilisateur utilisateur = utilisateurRepository.findByUsername(username)
@@ -105,6 +108,7 @@ public class CharacterService {
      * @return Le personnage
      * @throws CharacterNotFoundException Si le personnage n'existe pas ou n'appartient pas à l'utilisateur
      */
+    @Override
     @Transactional(readOnly = true)
     public Character getCharacterById(String username, Long characterId) {
         Utilisateur utilisateur = utilisateurRepository.findByUsername(username)
@@ -124,6 +128,7 @@ public class CharacterService {
     /**
      * Vérifie si un utilisateur a déjà un personnage
      */
+    @Override
     @Transactional(readOnly = true)
     public boolean hasCharacter(String username) {
         Utilisateur utilisateur = utilisateurRepository.findByUsername(username)
@@ -135,6 +140,7 @@ public class CharacterService {
     /**
      * Met à jour la position du personnage
      */
+    @Override
     @Transactional
     public Character updatePosition(String username, Double x, Double y) {
         Character character = getCharacterByUsername(username);
@@ -169,6 +175,7 @@ public class CharacterService {
      * @param characterId ID du personnage à supprimer
      * @throws CharacterNotFoundException Si le personnage n'existe pas ou n'appartient pas à l'utilisateur
      */
+    @Override
     @Transactional
     public void deleteCharacterById(String username, Long characterId) {
         Character character = getCharacterById(username, characterId);

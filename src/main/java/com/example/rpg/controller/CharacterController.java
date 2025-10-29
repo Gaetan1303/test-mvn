@@ -61,7 +61,6 @@ public class CharacterController {
      * 
      * @param authentication Authentification Spring Security
      * @return Le personnage avec toutes ses informations
-     * @deprecated Utiliser /list et /get/{id} pour multi-personnages
      */
     @Deprecated
     @GetMapping("/me")

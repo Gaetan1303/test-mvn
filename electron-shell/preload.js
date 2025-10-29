@@ -63,9 +63,6 @@ contextBridge.exposeInMainWorld('api', {
         return await callApi('/api/character/create', { method: 'POST', token, body: { name, characterClass } });
     },
 
-    /**
-     * @deprecated Utiliser getMyCharacters et getCharacterById pour multi-personnages
-     */
     getMyCharacter: async (token) => {
         return await callApi('/api/character/me', { method: 'GET', token });
     },
@@ -88,9 +85,6 @@ contextBridge.exposeInMainWorld('api', {
         return await callApi('/api/character/exists', { method: 'GET', token });
     },
 
-    /**
-     * @deprecated Utiliser deleteCharacterById pour multi-personnages
-     */
     deleteCharacter: async (token) => {
         return await callApi('/api/character/delete', { method: 'DELETE', token });
     },
