@@ -251,32 +251,32 @@ public class Character {
     }
 
     // === Anciennes stats (deprecated) ===
-    @Deprecated
+    
     public Integer getStrength() {
         return strength;
     }
 
-    @Deprecated
+    
     public void setStrength(Integer strength) {
         this.strength = strength;
     }
 
-    @Deprecated
+    
     public Integer getAgility() {
         return agility;
     }
 
-    @Deprecated
+    
     public void setAgility(Integer agility) {
         this.agility = agility;
     }
 
-    @Deprecated
+    
     public Integer getIntelligence() {
         return intelligence;
     }
 
-    @Deprecated
+    
     public void setIntelligence(Integer intelligence) {
         this.intelligence = intelligence;
     }

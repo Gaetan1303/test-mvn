@@ -31,15 +31,15 @@ electron-shell/
 ```
 
 **Problèmes identifiés** :
-- ❌ **500+ lignes** dans 2 fichiers seulement
-- ❌ CSS mélangé au HTML (maintenance difficile)
-- ❌ Logique JS monolithique (300 lignes d'affilée)
-- ❌ Impossible à tester unitairement
-- ❌ Pas de séparation des responsabilités
-- ❌ Couplage fort entre composants
-- ❌ Difficile d'ajouter de nouvelles fonctionnalités
-- ❌ Aucune documentation
-- ❌ Code dupliqué (validation, messages)
+-  **500+ lignes** dans 2 fichiers seulement
+-  CSS mélangé au HTML (maintenance difficile)
+-  Logique JS monolithique (300 lignes d'affilée)
+-  Impossible à tester unitairement
+-  Pas de séparation des responsabilités
+-  Couplage fort entre composants
+-  Difficile d'ajouter de nouvelles fonctionnalités
+-  Aucune documentation
+-  Code dupliqué (validation, messages)
 
 ---
 
@@ -47,10 +47,10 @@ electron-shell/
 
 ```
 electron-shell/
-├── 📄 HTML (1 fichier - 130 lignes)
+├──  HTML (1 fichier - 130 lignes)
 │   └── index.html (structure pure)
 │
-├── 🎨 CSS (6 fichiers - 450 lignes total)
+├──  CSS (6 fichiers - 450 lignes total)
 │   ├── styles/main.css (60 lignes)
 │   ├── styles/forms.css (55 lignes)
 │   ├── styles/tabs.css (30 lignes)
@@ -58,7 +58,7 @@ electron-shell/
 │   ├── styles/character.css (80 lignes)
 │   └── styles/game.css (40 lignes)
 │
-├── 📜 JavaScript (10 fichiers - 850 lignes total)
+├──  JavaScript (10 fichiers - 850 lignes total)
 │   ├── scripts/app.js (30 lignes)
 │   │
 │   ├── scripts/utils/ (4 fichiers - 200 lignes)
@@ -74,13 +74,13 @@ electron-shell/
 │       ├── character-screen.js (85 lignes)
 │       └── game-screen.js (65 lignes)
 │
-├── 🔐 API Bridge (1 fichier - 115 lignes)
+├──  API Bridge (1 fichier - 115 lignes)
 │   └── preload.js (complet avec 6 méthodes)
 │
-├── ⚙️ Configuration (1 fichier)
+├──  Configuration (1 fichier)
 │   └── main.js (setup Electron)
 │
-└── 📚 Documentation (4 fichiers - 800+ lignes)
+└──  Documentation (4 fichiers - 800+ lignes)
     ├── README.md (guide utilisateur)
     ├── ARCHITECTURE.md (diagrammes techniques)
     ├── MIGRATION.md (guide de migration)
@@ -88,21 +88,21 @@ electron-shell/
 ```
 
 **Améliorations** :
-- ✅ **20 fichiers** bien organisés
-- ✅ Chaque fichier < 150 lignes (lisible d'un coup d'œil)
-- ✅ CSS 100% séparé (6 fichiers thématiques)
-- ✅ JS modulaire (10 fichiers avec responsabilités claires)
-- ✅ Classes utilitaires réutilisables
-- ✅ Testable unitairement
-- ✅ Séparation stricte des responsabilités
-- ✅ Faible couplage (injection de dépendances)
-- ✅ Facile d'ajouter de nouvelles fonctionnalités
-- ✅ Documentation complète (4 fichiers MD)
-- ✅ Code DRY (Don't Repeat Yourself)
+-  **20 fichiers** bien organisés
+-  Chaque fichier < 150 lignes (lisible d'un coup d'œil)
+-  CSS 100% séparé (6 fichiers thématiques)
+-  JS modulaire (10 fichiers avec responsabilités claires)
+-  Classes utilitaires réutilisables
+-  Testable unitairement
+-  Séparation stricte des responsabilités
+-  Faible couplage (injection de dépendances)
+-  Facile d'ajouter de nouvelles fonctionnalités
+-  Documentation complète (4 fichiers MD)
+-  Code DRY (Don't Repeat Yourself)
 
 ---
 
-## 📊 Métriques comparatives
+##  Métriques comparatives
 
 | Critère | Avant | Après | Gain |
 |---------|-------|-------|------|
@@ -117,7 +117,7 @@ electron-shell/
 
 ---
 
-## 🔄 Mapping des fonctionnalités
+##  Mapping des fonctionnalités
 
 ### État global
 | Avant | Après |
@@ -159,7 +159,7 @@ electron-shell/
 
 ---
 
-## 💡 Exemples de code comparés
+##  Exemples de code comparés
 
 ### Validation d'email
 
@@ -269,7 +269,7 @@ describe('ScreenManager', () => {
 
 ---
 
-## 📈 Évolution de la complexité
+##  Évolution de la complexité
 
 ### Complexité cyclomatique (estimation)
 
@@ -287,21 +287,7 @@ describe('ScreenManager', () => {
 
 ---
 
-## 🎯 Conclusion
-
-### Gains quantifiables
-- ✅ **-70%** de lignes par fichier (lisibilité)
-- ✅ **+900%** de documentation (maintenabilité)
-- ✅ **+100%** de testabilité (0% → 100%)
-- ✅ **-85%** de complexité cyclomatique moyenne
-
-### Gains qualitatifs
-- ✅ Code professionnel et maintenable
-- ✅ Respecte les principes SOLID
-- ✅ Architecture scalable
-- ✅ Onboarding facile pour nouveaux développeurs
-- ✅ Réduction du temps de débogage
-- ✅ Facilité d'ajout de fonctionnalités
+##  Conclusion
 
 ### Investissement vs Retour
 - **Temps de refactoring** : ~2 heures
@@ -311,5 +297,5 @@ describe('ScreenManager', () => {
 ---
 
 **Transformation réalisée le** : 28 octobre 2025  
-**Statut** : ✅ Migration complète et validée  
+**Statut** : Migration complète et validée  
 **Prochaine phase** : WebSocket + Canvas (Phase 1)

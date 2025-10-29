@@ -1,4 +1,4 @@
-# 🏗️ Diagramme d'Architecture - Electron Frontend
+#  Diagramme d'Architecture - Electron Frontend
 
 ## Vue d'ensemble
 
@@ -18,7 +18,7 @@
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         PRELOAD SCRIPT (preload.js)                      │
-│                      🔐 Pont sécurisé via contextBridge                  │
+│                       Pont sécurisé via contextBridge                  │
 │                                                                          │
 │  window.api = {                                                         │
 │    ├── register(username, email, password)                              │
@@ -200,7 +200,7 @@ scripts/app.js (Point d'entrée)
 │            Affichage stats complètes                                │
 │                        │                                             │
 │                        ▼                                             │
-│              "🚀 Lancer le jeu"                                     │
+│              " Lancer le jeu"                                     │
 │                        │                                             │
 │                        ▼                                             │
 │              gameScreen.launch()                                    │
@@ -279,27 +279,27 @@ scripts/app.js (Point d'entrée)
 
 ## Principes de conception appliqués
 
-### ✅ Single Responsibility Principle (SRP)
+###  Single Responsibility Principle (SRP)
 - Chaque classe a une seule responsabilité
 - `AppState` → gestion d'état uniquement
 - `ScreenManager` → navigation uniquement
 - `FormValidator` → validation uniquement
 
-### ✅ Separation of Concerns (SoC)
+###  Separation of Concerns (SoC)
 - HTML : Structure
 - CSS : Présentation
 - JS : Comportement
 
-### ✅ Don't Repeat Yourself (DRY)
+### Don't Repeat Yourself (DRY)
 - Validation centralisée dans `FormValidator`
 - Messages centralisés dans `MessageManager`
 - État centralisé dans `AppState`
 
-### ✅ Open/Closed Principle
+###  Open/Closed Principle
 - Facile d'ajouter un nouvel écran sans modifier l'existant
 - Facile d'ajouter un nouveau style sans toucher aux autres
 
-### ✅ Dependency Injection
+###  Dependency Injection
 - Les écrans reçoivent les dépendances via `window.*`
 - Facile à tester en mockant les dépendances
 

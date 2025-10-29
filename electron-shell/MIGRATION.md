@@ -1,6 +1,6 @@
-# 🎨 Architecture Electron - Guide de Migration
+#  Architecture Electron - Guide de Migration
 
-## ✅ Refactoring terminé
+##  Refactoring terminé
 
 L'architecture monolithique a été migrée vers une architecture modulaire professionnelle.
 
@@ -14,11 +14,11 @@ electron-shell/
 ```
 
 **Problèmes** :
-- ❌ CSS mélangé au HTML
-- ❌ Fichier JS monolithique de 300+ lignes
-- ❌ Difficile à maintenir
-- ❌ Pas de réutilisation de code
-- ❌ Gestion d'état dispersée
+-  CSS mélangé au HTML
+-  Fichier JS monolithique de 300+ lignes
+-  Difficile à maintenir
+-  Pas de réutilisation de code
+-  Gestion d'état dispersée
 
 ### Après (Architecture modulaire)
 ```
@@ -28,7 +28,7 @@ electron-shell/
 ├── preload.js              # API bridge complet
 ├── package.json
 │
-├── styles/                 # 🎨 CSS modulaire (6 fichiers)
+├── styles/                 #  CSS modulaire (6 fichiers)
 │   ├── main.css
 │   ├── forms.css
 │   ├── tabs.css
@@ -36,31 +36,31 @@ electron-shell/
 │   ├── character.css
 │   └── game.css
 │
-└── scripts/                # 📜 JS modulaire (10 fichiers)
+└── scripts/                # JS modulaire (10 fichiers)
     ├── app.js             # Point d'entrée
     ├── utils/             # 4 utilitaires
     └── screens/           # 5 écrans
 ```
 
 **Avantages** :
-- ✅ Séparation HTML/CSS/JS
-- ✅ Fichiers petits et focalisés (<100 lignes chacun)
-- ✅ Réutilisation via classes utilitaires
-- ✅ Navigation claire entre écrans
-- ✅ État centralisé avec `AppState`
-- ✅ Validation robuste avec `FormValidator`
-- ✅ Messages cohérents avec `MessageManager`
+- Séparation HTML/CSS/JS
+- Fichiers petits et focalisés (<100 lignes chacun)
+- Réutilisation via classes utilitaires
+- Navigation claire entre écrans
+- État centralisé avec `AppState`
+- Validation robuste avec `FormValidator`
+- Messages cohérents avec `MessageManager`
 
-## 📊 Métriques
+##  Métriques
 
 | Métrique | Avant | Après | Amélioration |
 |----------|-------|-------|--------------|
-| Fichiers CSS | 0 (inline) | 6 | ♻️ Réutilisable |
-| Fichiers JS | 1 (300+ lignes) | 10 (50-100 lignes) | 🔍 Maintenable |
-| Couplage | Fort | Faible | 🔗 Modulaire |
-| Tests unitaires | Impossible | Possible | 🧪 Testable |
+| Fichiers CSS | 0 (inline) | 6 |  Réutilisable |
+| Fichiers JS | 1 (300+ lignes) | 10 (50-100 lignes) |  Maintenable |
+| Couplage | Fort | Faible |  Modulaire |
+| Tests unitaires | Impossible | Possible |  Testable |
 
-## 🔄 Équivalences
+##  Équivalences
 
 | Ancien code | Nouveau code |
 |-------------|--------------|
@@ -69,37 +69,37 @@ electron-shell/
 | `showError(msg)` | `messageManager.showAuthError(msg)` |
 | Validation manuelle | `FormValidator.validateUsername(val)` |
 
-## 🚀 Migration des fonctionnalités
+##  Migration des fonctionnalités
 
 Toutes les fonctionnalités de l'ancien `renderer.js` ont été migrées :
 
-### ✅ Authentification
+###  Authentification
 - Login/Register avec validation
 - Gestion JWT
 - Onglets connexion/inscription
 - Messages d'erreur
 
-### ✅ Navigation
+###  Navigation
 - Gestion des écrans (5 écrans)
 - Transitions fluides
 - État persistant
 
-### ✅ Création de personnage
+### Création de personnage
 - Sélection de classe
 - Validation du nom
 - Affichage stats
 
-### ✅ Personnage
+### Personnage
 - Stats complètes
 - État du joueur (HUB/COMBAT/etc.)
 - Position
 
-### ✅ Jeu
+### Jeu
 - Écran de jeu
 - Placeholder canvas
 - Déconnexion
 
-## 📝 Fichier archivé
+##  Fichier archivé
 
 L'ancien `renderer.js` a été renommé en `renderer.js.old` pour référence.
 
@@ -115,14 +115,14 @@ npm run dev
 ```
 
 Tester :
-1. ✅ Login/Register
-2. ✅ Navigation menu
-3. ✅ Création personnage
-4. ✅ Affichage stats
-5. ✅ Lancement jeu
-6. ✅ Déconnexion
+1. Login/Register
+2. Navigation menu
+3. Création personnage
+4. Affichage stats
+5. Lancement jeu
+6.  Déconnexion
 
-## 📖 Documentation
+##  Documentation
 
 Consulter `README.md` pour :
 - Structure détaillée
@@ -133,4 +133,4 @@ Consulter `README.md` pour :
 ---
 
 **Date de migration** : 28 octobre 2025  
-**Statut** : ✅ Terminé et testé
+**Statut** :  Terminé et testé
