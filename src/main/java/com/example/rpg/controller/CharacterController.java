@@ -172,26 +172,26 @@ public class CharacterController {
             .map(charClass -> {
                 String emoji = switch (charClass) {
                     // Combat et Mêlée
-                    case SQUIRE -> "🎓";
-                    case KNIGHT -> "🛡️";
-                    case MONK -> "🥋";
-                    case THIEF -> "🗡️";
-                    case DRAGOON -> "🐉";
-                    case SAMURAI -> "⚔️";
-                    case NINJA -> "🥷";
+                    case SQUIRE -> "";
+                    case KNIGHT -> "";
+                    case MONK -> "";
+                    case THIEF -> "";
+                    case DRAGOON -> "";
+                    case SAMURAI -> "";
+                    case NINJA -> "";
                     // Magie et Support
-                    case CHEMIST -> "⚗️";
-                    case WHITE_MAGE -> "✨";
-                    case BLACK_MAGE -> "🔮";
-                    case TIME_MAGE -> "⏰";
-                    case SUMMONER -> "🌟";
-                    case MYSTIC -> "🔯";
-                    case GEOMANCER -> "🌍";
+                    case CHEMIST -> "";
+                    case WHITE_MAGE -> "";
+                    case BLACK_MAGE -> "";
+                    case TIME_MAGE -> "";
+                    case SUMMONER -> "";
+                    case MYSTIC -> "";
+                    case GEOMANCER -> "";
                     // Spéciaux
-                    case BARD -> "🎵";
-                    case DANCER -> "💃";
-                    case MIME -> "�";
-                    case DARK_KNIGHT -> "🗡️";
+                    case BARD -> "";
+                    case DANCER -> "";
+                    case MIME -> "";
+                    case DARK_KNIGHT -> "";
                 };
                 
                 return new CharacterClassInfo(

@@ -69,9 +69,13 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/").permitAll()                // Page d'accueil publique
+                .requestMatchers("/health").permitAll()          // Health check public
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()  // Routes d'authentification
-                .requestMatchers("/api/character/classes").permitAll()  // Endpoint public pour récupérer les classes
+                .requestMatchers("/api/auth/**").permitAll()     // Routes d'authentification
+                .requestMatchers("/api/character/classes").permitAll()  // Liste des classes (public)
+                .requestMatchers("/ws/**").permitAll()           // Endpoint WebSocket (auth via STOMP)
+                // Tous les autres endpoints nécessitent une authentification JWT
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authProvider)
