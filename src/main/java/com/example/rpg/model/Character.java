@@ -25,43 +25,64 @@ public class Character {
     @Column(nullable = false)
     private Integer level = 1;
 
-    // === Stats Final Fantasy Tactics ===
+    // === Stats Final Fantasy Tactics Advance complètes ===
+    
+    // Points de vie
     @Column(nullable = false)
     private Integer currentHp;
 
     @Column(nullable = false)
     private Integer maxHp;
 
+    // Points de magie
     @Column(nullable = false)
     private Integer currentMp;
 
     @Column(nullable = false)
     private Integer maxMp;
 
+    // Attaque
     @Column(nullable = false, name = "physical_attack")
-    private Integer pa;  // Physical Attack
+    private Integer pa;  // Physical Attack (Attack Power)
 
     @Column(nullable = false, name = "magic_attack")
-    private Integer ma;  // Magic Attack
+    private Integer ma;  // Magic Attack (Magic Power)
+
+    // Mouvement et mobilité
+    @Column(nullable = false)
+    private Integer speed;  // Vitesse - Détermine l'ordre d'action
 
     @Column(nullable = false)
-    private Integer speed;
+    private Integer move;  // Mouvement - Nombre de cases déplaçables
 
+    // Défense
+    @Column(nullable = false, name = "physical_defense")
+    private Integer pDef;  // Défense physique
+
+    @Column(nullable = false, name = "magic_defense")
+    private Integer mDef;  // Défense magique
+
+    // Précision (Hit/Accuracy)
     @Column(nullable = false)
-    private Integer move;
+    private Integer hit;  // Précision physique (pour attaques physiques)
 
-    // === Anciennes stats (compatibilité) - À RETIRER ===
-    @Deprecated
-    @Column(nullable = true)
-    private Integer strength;
+    @Column(nullable = false, name = "magic_hit")
+    private Integer magicHit;  // Précision magique (pour sorts)
 
-    @Deprecated
-    @Column(nullable = true)
-    private Integer agility;
+    // Esquive (Evade)
+    @Column(nullable = false)
+    private Integer evade;  // Esquive physique
 
-    @Deprecated
-    @Column(nullable = true)
-    private Integer intelligence;
+    @Column(nullable = false, name = "magic_evade")
+    private Integer magicEvade;  // Esquive magique
+
+    // Critique
+    @Column(nullable = false, name = "crit_rate")
+    private Integer critRate;  // Taux de critique (en %)
+
+    // Destin - Détermine l'alignement du personnage (peut être négatif)
+    @Column(nullable = false)
+    private Integer destiny;  // Destin (positif = bon, négatif = mauvais, 0 = neutre)
 
     @Column(nullable = false)
     private Integer experience = 0;
@@ -104,6 +125,11 @@ public class Character {
     public Character() {
     }
 
+    /**
+     * Constructeur avec initialisation des stats
+     * @deprecated Utiliser CharacterFactory.createCharacter() pour respecter les patterns Factory et Strategy
+     */
+    @Deprecated
     public Character(String name, CharacterClass characterClass, Utilisateur utilisateur) {
         this.name = name;
         this.characterClass = characterClass;
@@ -113,7 +139,9 @@ public class Character {
 
     /**
      * Initialise les statistiques du personnage selon sa classe (système FFT)
+     * @deprecated Utiliser StatsInitializer (Pattern Strategy) via CharacterFactory
      */
+    @Deprecated
     private void initializeStats() {
         // Stats FFT
         this.maxHp = characterClass.getBaseHp();
@@ -124,11 +152,6 @@ public class Character {
         this.ma = characterClass.getBaseMa();
         this.speed = characterClass.getBaseSpeed();
         this.move = characterClass.getBaseMove();
-        
-        // Compatibilité anciennes stats (deprecated)
-        this.strength = characterClass.getBasePa();
-        this.agility = characterClass.getBaseSpeed();
-        this.intelligence = characterClass.getBaseMa();
     }
 
     /**
@@ -256,35 +279,68 @@ public class Character {
         this.move = move;
     }
 
-    // === Anciennes stats (deprecated) ===
-    
-    public Integer getStrength() {
-        return strength;
+    public Integer getPDef() {
+        return pDef;
     }
 
-    
-    public void setStrength(Integer strength) {
-        this.strength = strength;
+    public void setPDef(Integer pDef) {
+        this.pDef = pDef;
     }
 
-    
-    public Integer getAgility() {
-        return agility;
+    public Integer getMDef() {
+        return mDef;
     }
 
-    
-    public void setAgility(Integer agility) {
-        this.agility = agility;
+    public void setMDef(Integer mDef) {
+        this.mDef = mDef;
     }
 
-    
-    public Integer getIntelligence() {
-        return intelligence;
+    public Integer getHit() {
+        return hit;
     }
 
-    
-    public void setIntelligence(Integer intelligence) {
-        this.intelligence = intelligence;
+    public void setHit(Integer hit) {
+        this.hit = hit;
+    }
+
+    public Integer getMagicHit() {
+        return magicHit;
+    }
+
+    public void setMagicHit(Integer magicHit) {
+        this.magicHit = magicHit;
+    }
+
+    public Integer getEvade() {
+        return evade;
+    }
+
+    public void setEvade(Integer evade) {
+        this.evade = evade;
+    }
+
+    public Integer getMagicEvade() {
+        return magicEvade;
+    }
+
+    public void setMagicEvade(Integer magicEvade) {
+        this.magicEvade = magicEvade;
+    }
+
+    public Integer getCritRate() {
+        return critRate;
+    }
+
+    public void setCritRate(Integer critRate) {
+        this.critRate = critRate;
+    }
+
+    public Integer getDestiny() {
+        return destiny;
+    }
+
+    public void setDestiny(Integer destiny) {
+        this.destiny = destiny;
     }
 
     public Integer getExperience() {

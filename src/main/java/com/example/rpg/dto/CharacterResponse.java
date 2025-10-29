@@ -3,9 +3,11 @@ package com.example.rpg.dto;
 import com.example.rpg.model.Character;
 import com.example.rpg.model.CharacterClass;
 import com.example.rpg.model.PlayerState;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * DTO de réponse contenant toutes les informations du personnage
+ * Stats Final Fantasy Tactics Advance complètes (14 stats + données de jeu)
  */
 public class CharacterResponse {
 
@@ -14,11 +16,25 @@ public class CharacterResponse {
     private CharacterClass characterClass;
     private String classDisplayName;
     private Integer level;
+    
+    // Stats FFT Advance complètes
     private Integer currentHp;
     private Integer maxHp;
-    private Integer strength;
-    private Integer agility;
-    private Integer intelligence;
+    private Integer currentMp;
+    private Integer maxMp;
+    private Integer pa;           // Physical Attack
+    private Integer ma;           // Magic Attack
+    private Integer speed;
+    private Integer move;
+    private Integer pDef;         // Physical Defense
+    private Integer mDef;         // Magic Defense
+    private Integer hit;          // Précision physique
+    private Integer magicHit;     // Précision magique
+    private Integer evade;        // Esquive physique
+    private Integer magicEvade;   // Esquive magique
+    private Integer critRate;     // Taux de critique
+    private Integer destiny;      // Destin/Alignement
+    
     private Integer experience;
     private Double positionX;
     private Double positionY;
@@ -37,11 +53,25 @@ public class CharacterResponse {
         this.characterClass = character.getCharacterClass();
         this.classDisplayName = character.getCharacterClass().getDisplayName();
         this.level = character.getLevel();
+        
+        // Stats FFT Advance complètes
         this.currentHp = character.getCurrentHp();
         this.maxHp = character.getMaxHp();
-        this.strength = character.getStrength();
-        this.agility = character.getAgility();
-        this.intelligence = character.getIntelligence();
+        this.currentMp = character.getCurrentMp();
+        this.maxMp = character.getMaxMp();
+        this.pa = character.getPa();
+        this.ma = character.getMa();
+        this.speed = character.getSpeed();
+        this.move = character.getMove();
+        this.pDef = character.getPDef();
+        this.mDef = character.getMDef();
+        this.hit = character.getHit();
+        this.magicHit = character.getMagicHit();
+        this.evade = character.getEvade();
+        this.magicEvade = character.getMagicEvade();
+        this.critRate = character.getCritRate();
+        this.destiny = character.getDestiny();
+        
         this.experience = character.getExperience();
         this.positionX = character.getPositionX();
         this.positionY = character.getPositionY();
@@ -106,28 +136,118 @@ public class CharacterResponse {
         this.maxHp = maxHp;
     }
 
-    public Integer getStrength() {
-        return strength;
+    public Integer getCurrentMp() {
+        return currentMp;
     }
 
-    public void setStrength(Integer strength) {
-        this.strength = strength;
+    public void setCurrentMp(Integer currentMp) {
+        this.currentMp = currentMp;
     }
 
-    public Integer getAgility() {
-        return agility;
+    public Integer getMaxMp() {
+        return maxMp;
     }
 
-    public void setAgility(Integer agility) {
-        this.agility = agility;
+    public void setMaxMp(Integer maxMp) {
+        this.maxMp = maxMp;
     }
 
-    public Integer getIntelligence() {
-        return intelligence;
+    public Integer getPa() {
+        return pa;
     }
 
-    public void setIntelligence(Integer intelligence) {
-        this.intelligence = intelligence;
+    public void setPa(Integer pa) {
+        this.pa = pa;
+    }
+
+    public Integer getMa() {
+        return ma;
+    }
+
+    public void setMa(Integer ma) {
+        this.ma = ma;
+    }
+
+    public Integer getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Integer speed) {
+        this.speed = speed;
+    }
+
+    public Integer getMove() {
+        return move;
+    }
+
+    public void setMove(Integer move) {
+        this.move = move;
+    }
+
+    @JsonProperty("pDef")
+    public Integer getPDef() {
+        return pDef;
+    }
+
+    public void setPDef(Integer pDef) {
+        this.pDef = pDef;
+    }
+
+    @JsonProperty("mDef")
+    public Integer getMDef() {
+        return mDef;
+    }
+
+    public void setMDef(Integer mDef) {
+        this.mDef = mDef;
+    }
+
+    public Integer getHit() {
+        return hit;
+    }
+
+    public void setHit(Integer hit) {
+        this.hit = hit;
+    }
+
+    public Integer getMagicHit() {
+        return magicHit;
+    }
+
+    public void setMagicHit(Integer magicHit) {
+        this.magicHit = magicHit;
+    }
+
+    public Integer getEvade() {
+        return evade;
+    }
+
+    public void setEvade(Integer evade) {
+        this.evade = evade;
+    }
+
+    public Integer getMagicEvade() {
+        return magicEvade;
+    }
+
+    public void setMagicEvade(Integer magicEvade) {
+        this.magicEvade = magicEvade;
+    }
+
+    public Integer getCritRate() {
+        return critRate;
+    }
+
+    public void setCritRate(Integer critRate) {
+        this.critRate = critRate;
+    }
+
+    public Integer getDestiny() {
+        return destiny;
+    }
+
+    public void setDestiny(Integer destiny) {
+        this.destiny = destiny;
     }
 
     public Integer getExperience() {

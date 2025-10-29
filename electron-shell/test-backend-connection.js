@@ -12,9 +12,9 @@ async function testBackend() {
     console.log(`Backend URL: ${API_BASE_URL}\n`);
 
     // Test 1: Register
-    console.log('1️  Test POST /auth/register...');
+    console.log('1️  Test POST /api/auth/register...');
     try {
-        const res1 = await fetch(`${API_BASE_URL}/auth/register`, {
+        const res1 = await fetch(`${API_BASE_URL}/api/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -32,8 +32,8 @@ async function testBackend() {
             console.log('Token reçu:', data.token ? 'Oui (' + data.token.substring(0, 20) + '...)' : 'Non');
             
             // Test 2: Login avec le même user
-            console.log('\n2️  Test POST /auth/login...');
-            const res2 = await fetch(`${API_BASE_URL}/auth/login`, {
+            console.log('\n2️  Test POST /api/auth/login...');
+            const res2 = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

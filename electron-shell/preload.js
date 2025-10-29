@@ -46,11 +46,11 @@ async function callApi(path, { method = 'GET', token = null, body = null } = {})
 contextBridge.exposeInMainWorld('api', {
     // Authentification
     register: async (username, email, password) => {
-        return await callApi('/auth/register', { method: 'POST', body: { username, email, password } });
+        return await callApi('/api/auth/register', { method: 'POST', body: { username, email, password } });
     },
 
     login: async (username, password) => {
-        return await callApi('/auth/login', { method: 'POST', body: { username, password } });
+        return await callApi('/api/auth/login', { method: 'POST', body: { username, password } });
     },
 
     // Menu

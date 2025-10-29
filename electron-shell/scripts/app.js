@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('   - window.api.getMenu:', typeof window.api.getMenu);
         
         // Test rapide de connexion backend
-        fetch('http://localhost:8080/auth/register', {
+        fetch('http://localhost:8080/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: 'test', email: 'test@test.com', password: 'test123' })

@@ -3,6 +3,7 @@ package com.example.rpg.service;
 import com.example.rpg.exception.CharacterAlreadyExistsException;
 import com.example.rpg.exception.CharacterLimitException;
 import com.example.rpg.exception.CharacterNotFoundException;
+import com.example.rpg.factory.CharacterFactory;
 import com.example.rpg.model.Character;
 import com.example.rpg.model.CharacterClass;
 import com.example.rpg.model.Utilisateur;
@@ -18,6 +19,7 @@ import java.util.List;
  * Service de gestion des personnages de jeu
  * Support de plusieurs personnages par utilisateur (max 3)
  * Respecte le principe I (Interface Segregation) : implémente l'interface ICharacterService
+ * Utilise le Pattern Factory pour créer les personnages
  */
 @Service
 public class CharacterService implements ICharacterService {
@@ -26,11 +28,14 @@ public class CharacterService implements ICharacterService {
 
     private final CharacterRepository characterRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final CharacterFactory characterFactory;
 
     public CharacterService(CharacterRepository characterRepository, 
-                           UtilisateurRepository utilisateurRepository) {
+                           UtilisateurRepository utilisateurRepository,
+                           CharacterFactory characterFactory) {
         this.characterRepository = characterRepository;
         this.utilisateurRepository = utilisateurRepository;
+        this.characterFactory = characterFactory;
     }
 
     /**
@@ -62,8 +67,8 @@ public class CharacterService implements ICharacterService {
             throw new CharacterAlreadyExistsException("Ce nom de personnage est déjà utilisé");
         }
 
-        // Créer le personnage
-        Character character = new Character(characterName, characterClass, utilisateur);
+        // Créer le personnage via la Factory (Pattern Factory + Strategy)
+        Character character = characterFactory.createCharacter(characterName, characterClass, utilisateur);
         return characterRepository.save(character);
     }
 

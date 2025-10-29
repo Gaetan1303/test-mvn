@@ -62,7 +62,7 @@ public class SecurityConfig {
         return source;
     }
 
-    // SecurityFilterChain : permet d'autoriser /auth/** sans auth et d'ajouter le JwtFilter
+    // SecurityFilterChain : permet d'autoriser /auth/** et /api/auth/** sans auth et d'ajouter le JwtFilter
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtFilter jwtFilter, DaoAuthenticationProvider authProvider) throws Exception {
         http
@@ -70,6 +70,7 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()  // Routes d'authentification
                 .requestMatchers("/api/character/classes").permitAll()  // Endpoint public pour récupérer les classes
                 .anyRequest().authenticated()
             )
