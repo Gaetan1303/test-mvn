@@ -2,6 +2,8 @@ package com.example.rpg.repository;
 
 import com.example.rpg.model.Character;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,4 +43,21 @@ public interface CharacterRepository extends JpaRepository<Character, Long> {
      * Vérifie si un utilisateur a déjà un personnage
      */
     boolean existsByUtilisateurId(Long utilisateurId);
+    
+    /**
+     * Trouve un personnage à une position donnée (pour détection de collisions)
+     * Exclut le personnage avec l'ID donné pour permettre au joueur de rester à sa position actuelle
+     */
+    Optional<Character> findByPositionXAndPositionYAndIdNot(Double positionX, Double positionY, Long excludeCharacterId);
+    
+    /**
+     * Vérifie si une position est occupée par un autre personnage
+     */
+    boolean existsByPositionXAndPositionYAndIdNot(Double positionX, Double positionY, Long excludeCharacterId);
+    
+    /**
+     * Trouve l'ID d'un personnage à une position donnée (pour collision avec monstres)
+     */
+    @Query("SELECT c.id FROM Character c WHERE c.positionX = :x AND c.positionY = :y")
+    List<Long> findCharacterIdsAtPosition(@Param("x") Double x, @Param("y") Double y);
 }

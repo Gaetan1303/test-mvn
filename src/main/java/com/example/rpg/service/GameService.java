@@ -45,6 +45,13 @@ public class GameService {
             throw new IllegalArgumentException("Position hors limites");
         }
         
+        // Vérifier les collisions avec d'autres personnages
+        if (isPositionOccupied(newX, newY, characterId)) {
+            logger.warn("Collision détectée pour {} - Position occupée: ({}, {})", 
+                       character.getName(), newX, newY);
+            throw new IllegalArgumentException("Position occupée par un autre joueur");
+        }
+        
         // Calculer la distance du mouvement
         double distance = calculateDistance(character.getPositionX(), character.getPositionY(), newX, newY);
         double maxMoveDistance = character.getMove(); // Stat FFT "Move"
@@ -75,6 +82,17 @@ public class GameService {
      */
     private boolean isValidPosition(Double x, Double y) {
         return x >= MAP_MIN_X && x <= MAP_MAX_X && y >= MAP_MIN_Y && y <= MAP_MAX_Y;
+    }
+    
+    /**
+     * Vérifie si une position est occupée par un autre personnage
+     * @param x Position X à vérifier
+     * @param y Position Y à vérifier
+     * @param excludeCharacterId ID du personnage à exclure de la vérification (peut rester à sa propre position)
+     * @return true si la position est occupée par un autre personnage
+     */
+    public boolean isPositionOccupied(Double x, Double y, Long excludeCharacterId) {
+        return characterRepository.existsByPositionXAndPositionYAndIdNot(x, y, excludeCharacterId);
     }
     
     /**

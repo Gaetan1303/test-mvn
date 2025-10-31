@@ -9,14 +9,18 @@ import com.example.rpg.websocket.GameSessionManager;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Map;
 
 /**
  * Contrôleur WebSocket pour la logique de jeu temps réel
@@ -108,6 +112,39 @@ public class GameController {
         });
     }
     
+    /**
+     * Endpoint REST pour tester les mouvements (utilisé par les tests d'intégration)
+     * Endpoint: POST /api/game/move/{characterId}
+     */
+    @PostMapping("/api/game/move/{characterId}")
+    public ResponseEntity<?> moveCharacter(
+            @PathVariable Long characterId,
+            @Valid @RequestBody MovementRequest request) {
+        
+        try {
+            Character character = gameService.processMove(
+                characterId, 
+                request.getNewX(), 
+                request.getNewY(), 
+                request.getMapId()
+            );
+            
+            return ResponseEntity.ok(Map.of(
+                "message", "Mouvement effectué avec succès",
+                "character", character
+            ));
+            
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "error", e.getMessage()
+            ));
+        } catch (Exception e) {
+            logger.error("Erreur lors du mouvement du personnage {}", characterId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Erreur interne du serveur"));
+        }
+    }
+
     /**
      * Gestion du mouvement d'un personnage
      * Endpoint: /app/game/move
